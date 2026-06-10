@@ -502,10 +502,13 @@ def serve_static(filename):
 # ─────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────
-   init_db()
+# ─────────────────────────────────────────
+# MAIN
+# ─────────────────────────────────────────
+init_db()
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    init_db()
     print(f"\n🍃 Eve Café running at http://localhost:{port}")
     print("   Admin: AD.com / thisisbusiness")
     print(f"   API:   http://localhost:{port}/api/health\n")
