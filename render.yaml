@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: eve-cafe
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app
+    envVars:
+      - key: DB_PATH
+        value: /data/eve_cafe.db
+    disk:
+      name: eve-cafe-db
+      mountPath: /data
+      sizeGB: 1
