@@ -502,6 +502,7 @@ def serve_static(filename):
 # ─────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────
+   init_db()
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     init_db()
