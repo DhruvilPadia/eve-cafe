@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Eve — Order</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green-deep:#1a4a2e; --green-dark:#1d5c38; --green-mid:#226b40;
+  --green-btn:#1d6b42; --green-light:#2e7d4f; --gold:#e8a838; --gold-light:#f5c96a;
+  --cream:#fafaf7; --white:#ffffff; --gray-bg:#f2f2ef; --gray-card:#f7f7f4;
+  --gray-border:#e0e0d8; --text-dark:#1a1a18; --text-mid:#444440;
+  --text-muted:#888880; --red:#c0392b; --shadow-card:0 2px 12px rgba(26,74,46,0.10);
+  --shadow-btn:0 4px 18px rgba(26,74,46,0.28); --radius:14px; --radius-sm:10px;
+}
+body { font-family:'Nunito',sans-serif; background:var(--gray-bg); color:var(--text-dark);
+  min-height:100vh; overflow-x:hidden; -webkit-tap-highlight-color:transparent;
+  max-width:430px; margin:0 auto; }
+.screen { display:none; min-height:100vh; background:var(--gray-bg); }
+.screen.active { display:block; }
+
+/* ── SCREEN 1: ENTRY ── */
+#screen-entry { position:relative; min-height:100vh; display:none; background:#1a3a28; overflow:hidden; }
+#screen-entry.active { display:flex; flex-direction:column; }
+.entry-bg { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(26,58,40,.45) 0%,rgba(26,58,40,.55) 60%,rgba(26,74,46,.82) 100%); z-index:1; }
+.entry-bg-img { position:absolute; inset:0; background-image:url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80"); background-size:cover; background-position:center; z-index:0; }
+.entry-content { position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; padding:40px 24px; }
+.entry-logo { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:400; color:var(--white); letter-spacing:2px; text-shadow:0 4px 24px rgba(0,0,0,.3); animation:fadeUp .8s ease both; }
+.entry-tagline { font-size:13px; color:rgba(255,255,255,.65); letter-spacing:3px; text-transform:uppercase; margin-top:4px; animation:fadeUp .9s .1s ease both; }
+.entry-btn { margin-top:52px; background:var(--white); color:var(--green-dark); border:none; border-radius:30px; padding:14px 44px; font-family:'Nunito',sans-serif; font-size:15px; font-weight:700; cursor:pointer; letter-spacing:.5px; animation:fadeUp 1s .2s ease both; transition:transform .15s,box-shadow .15s; box-shadow:var(--shadow-btn); }
+.entry-btn:active { transform:scale(.97); }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── SCREEN 2: PARTY ── */
+#screen-party { position:relative; min-height:100vh; overflow:hidden; }
+.party-bg { position:absolute; inset:0; background-image:url("https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=800&q=80"); background-size:cover; background-position:center; filter:brightness(.45); z-index:0; }
+.party-content { position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:40px 24px; }
+.blob-card { background:var(--green-dark); border-radius:52% 48% 50% 50%/46% 44% 56% 54%; padding:38px 36px 42px; text-align:center; width:260px; box-shadow:0 12px 48px rgba(0,0,0,.45); }
+.blob-title { font-size:19px; font-weight:800; color:var(--white); line-height:1.3; margin-bottom:8px; }
+.blob-sub { font-size:12px; color:rgba(255,255,255,.62); line-height:1.5; margin-bottom:24px; }
+.party-counter { display:flex; align-items:center; justify-content:center; gap:20px; }
+.counter-btn { width:44px; height:44px; border-radius:50%; border:none; background:var(--white); color:var(--green-dark); font-size:22px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,.2); transition:transform .12s; }
+.counter-btn:active { transform:scale(.92); }
+.counter-val { font-size:32px; font-weight:800; color:var(--white); min-width:36px; text-align:center; }
+.party-next-btn { margin-top:32px; background:var(--white); color:var(--green-dark); border:none; border-radius:30px; padding:13px 48px; font-family:'Nunito',sans-serif; font-size:15px; font-weight:700; cursor:pointer; box-shadow:var(--shadow-btn); transition:transform .12s; }
+.party-next-btn:active { transform:scale(.97); }
+
+/* ── SCREEN 3: TABLES ── */
+#screen-table { background:var(--green-dark); min-height:100vh; }
+.table-header { background:var(--green-dark); padding:50px 20px 24px; text-align:center; }
+.table-header-title { font-size:26px; font-weight:800; color:var(--white); margin-bottom:4px; }
+.table-header-sub { font-size:12px; color:rgba(255,255,255,.55); }
+.tables-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:18px 14px 30px; }
+.table-tile { background:linear-gradient(145deg,#1e6640,#17512f); border:1.5px solid rgba(255,255,255,.12); border-radius:18px; padding:20px 12px 16px; text-align:center; cursor:pointer; transition:all .2s; display:flex; flex-direction:column; align-items:center; gap:10px; position:relative; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,.25); }
+.table-tile::before { content:''; position:absolute; top:-40%; left:-30%; width:80%; height:70%; background:radial-gradient(circle,rgba(255,255,255,.07) 0%,transparent 70%); pointer-events:none; }
+.table-tile:active { transform:scale(.95); }
+.table-tile.selected { border-color:var(--gold); background:linear-gradient(145deg,#2e8050,#1d6040); box-shadow:0 0 0 2.5px rgba(232,168,56,.5),0 6px 20px rgba(0,0,0,.3); }
+.table-tile.selected .table-tile-num { color:var(--gold-light); }
+.table-tile.occupied { opacity:.4; cursor:not-allowed; }
+.table-tile.occupied::after { content:'✗'; position:absolute; top:8px; right:10px; width:18px; height:18px; background:#c0392b; border-radius:50%; font-size:10px; font-weight:900; color:#fff; display:flex; align-items:center; justify-content:center; line-height:18px; }
+.table-tile.selected::after { content:'✓'; position:absolute; top:8px; right:10px; width:18px; height:18px; background:var(--gold); border-radius:50%; font-size:10px; font-weight:900; color:#fff; display:flex; align-items:center; justify-content:center; line-height:18px; }
+.table-icon-wrap { width:52px; height:52px; position:relative; }
+.table-icon-wrap svg { width:52px; height:52px; }
+.table-tile-num { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; color:rgba(255,255,255,.95); line-height:1; }
+.table-tile-label { font-size:10px; font-weight:600; color:rgba(255,255,255,.45); letter-spacing:.8px; text-transform:uppercase; }
+.table-confirm-btn { display:block; margin:0 14px 24px; width:calc(100% - 28px); background:var(--white); color:var(--green-dark); border:none; border-radius:var(--radius); padding:16px; font-family:'Nunito',sans-serif; font-size:15px; font-weight:800; cursor:pointer; box-shadow:var(--shadow-btn); transition:transform .12s; }
+.table-confirm-btn:active { transform:scale(.98); }
+.table-confirm-btn:disabled { opacity:.45; cursor:default; }
+
+/* ── HEADER + NAV ── */
+.green-header { background:var(--green-dark); padding:50px 20px 20px; display:flex; align-items:center; gap:14px; }
+.green-header-title { font-size:22px; font-weight:800; color:var(--white); flex:1; text-align:center; }
+.back-btn { width:36px; height:36px; border-radius:50%; border:2px solid rgba(255,255,255,.25); background:transparent; color:var(--white); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .15s; }
+.back-btn:active { background:rgba(255,255,255,.15); }
+.header-spacer { width:36px; flex-shrink:0; }
+
+/* ── SCREEN 4: MENU ── */
+.category-list { padding:14px 14px 100px; display:flex; flex-direction:column; gap:10px; }
+.category-card { background:var(--white); border-radius:var(--radius); overflow:hidden; display:flex; align-items:center; cursor:pointer; box-shadow:var(--shadow-card); transition:transform .15s,box-shadow .15s; height:82px; }
+.category-card:active { transform:scale(.98); box-shadow:none; }
+.cat-img { width:110px; height:100%; object-fit:cover; flex-shrink:0; }
+.cat-img-placeholder { width:110px; height:100%; background:var(--green-dark); display:flex; align-items:center; justify-content:center; font-size:34px; flex-shrink:0; }
+.cat-name { flex:1; font-size:16px; font-weight:700; color:var(--text-dark); padding:0 14px; line-height:1.3; }
+.cat-arrow { width:36px; height:36px; background:var(--green-btn); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--white); font-size:15px; margin-right:12px; flex-shrink:0; }
+
+/* ── SCREEN 5: ITEMS ── */
+.filter-tabs { display:flex; gap:8px; padding:12px 14px; background:var(--green-dark); overflow-x:auto; scrollbar-width:none; }
+.filter-tabs::-webkit-scrollbar { display:none; }
+.filter-tab { flex-shrink:0; padding:7px 14px; border-radius:20px; border:1.5px solid rgba(255,255,255,.25); background:transparent; color:rgba(255,255,255,.7); font-family:'Nunito',sans-serif; font-size:12px; font-weight:600; cursor:pointer; transition:all .18s; display:flex; align-items:center; gap:5px; }
+.filter-tab.active { background:var(--white); color:var(--green-dark); border-color:var(--white); }
+.items-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:14px 14px 120px; }
+.item-card { background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-card); cursor:pointer; transition:transform .15s; }
+.item-card:active { transform:scale(.97); }
+.item-card-img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; background:var(--gray-bg); }
+.item-card-img-placeholder { width:100%; aspect-ratio:1/1; background:linear-gradient(135deg,var(--green-mid),var(--green-light)); display:flex; align-items:center; justify-content:center; font-size:42px; }
+.item-card-body { padding:10px 10px 8px; }
+.item-card-badge { display:inline-flex; align-items:center; gap:3px; font-size:9px; font-weight:700; color:var(--gold); margin-bottom:3px; letter-spacing:.3px; }
+.item-card-name { font-size:12px; font-weight:700; color:var(--text-dark); line-height:1.35; margin-bottom:2px; }
+.item-card-price { font-size:11px; font-weight:600; color:var(--green-dark); margin-bottom:8px; }
+.item-qty-row { display:flex; align-items:center; justify-content:center; }
+.qty-pill { display:flex; align-items:center; background:var(--green-btn); border-radius:20px; overflow:hidden; width:100%; }
+.qty-pill-btn { width:30px; height:28px; border:none; background:transparent; color:var(--white); font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.qty-pill-label { flex:1; text-align:center; font-size:12px; font-weight:700; color:var(--white); }
+.qty-pill-val { font-size:13px; font-weight:800; color:var(--white); }
+
+/* ── SCREEN 6: DETAIL ── */
+#screen-detail { background:var(--white); }
+.detail-img-wrap { position:relative; width:100%; height:300px; overflow:hidden; background:var(--gray-bg); }
+.detail-img { width:100%; height:100%; object-fit:cover; display:block; }
+.detail-img-placeholder { width:100%; height:100%; background:linear-gradient(135deg,var(--green-mid),var(--green-deep)); display:flex; align-items:center; justify-content:center; font-size:72px; }
+.detail-back-btn { position:absolute; top:52px; left:16px; width:38px; height:38px; border-radius:50%; border:2px solid rgba(255,255,255,.6); background:rgba(0,0,0,.25); backdrop-filter:blur(6px); color:var(--white); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.detail-panel { background:var(--green-dark); border-radius:28px 28px 0 0; margin-top:-24px; position:relative; z-index:1; padding:22px 20px 120px; }
+.detail-badge-pill { background:var(--green-mid); color:rgba(255,255,255,.8); font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px; letter-spacing:.5px; display:inline-block; margin-bottom:10px; }
+.detail-title-row { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px; }
+.detail-name { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:600; color:var(--white); line-height:1.2; }
+.detail-price { font-size:17px; font-weight:800; color:var(--gold-light); white-space:nowrap; padding-top:4px; }
+.detail-desc { font-size:13px; color:rgba(255,255,255,.65); line-height:1.65; }
+.detail-footer { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; background:var(--white); padding:14px 18px 20px; display:flex; align-items:center; gap:14px; box-shadow:0 -4px 20px rgba(0,0,0,.08); z-index:50; }
+.detail-qty-row { display:flex; align-items:center; gap:12px; background:var(--green-btn); border-radius:24px; padding:8px 16px; }
+.detail-qty-btn { width:28px; height:28px; border-radius:50%; border:none; background:rgba(255,255,255,.2); color:var(--white); font-size:18px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.detail-qty-val { font-size:16px; font-weight:800; color:var(--white); min-width:20px; text-align:center; }
+.detail-add-btn { flex:1; background:var(--green-btn); color:var(--white); border:none; border-radius:24px; padding:14px 20px; font-family:'Nunito',sans-serif; font-size:15px; font-weight:800; cursor:pointer; box-shadow:var(--shadow-btn); }
+.detail-add-btn:active { background:var(--green-deep); }
+
+/* ── SCREEN 7: CUSTOMISE ── */
+.customise-body { padding:24px 18px 120px; }
+.customise-chips { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:24px; }
+.custom-chip { padding:9px 18px; border-radius:24px; border:2px solid var(--gray-border); background:var(--white); font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; cursor:pointer; transition:all .15s; color:var(--text-mid); }
+.custom-chip.sel-green { border-color:#27ae60; color:#1a8a48; background:#edfaf3; }
+.custom-chip.sel-red { border-color:#e74c3c; color:#c0392b; background:#fdecea; }
+.custom-chip.sel-purple { border-color:#9b59b6; color:#7d3c98; background:#f5eeff; }
+.custom-chip.sel-amber { border-color:#f39c12; color:#b7770d; background:#fef9ec; }
+.custom-chip.sel-dark { border-color:var(--text-dark); color:var(--text-dark); background:#f0f0ee; }
+.describe-label { font-size:13px; font-weight:700; color:var(--text-mid); margin-bottom:8px; display:block; }
+.describe-area { width:100%; background:#e8f5ee; border:none; border-radius:var(--radius); padding:14px; font-family:'Nunito',sans-serif; font-size:13px; color:var(--text-dark); height:120px; resize:none; outline:none; }
+.action-footer { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:430px; padding:14px 18px 20px; background:var(--white); box-shadow:0 -4px 18px rgba(0,0,0,.06); z-index:50; }
+.action-footer-btn { width:100%; background:var(--green-btn); color:var(--white); border:none; border-radius:var(--radius); padding:16px; font-family:'Nunito',sans-serif; font-size:16px; font-weight:800; cursor:pointer; box-shadow:var(--shadow-btn); transition:background .15s,transform .12s; }
+.action-footer-btn:active { background:var(--green-deep); transform:scale(.99); }
+.action-footer-btn:disabled { background:#aaa; cursor:not-allowed; }
+
+/* ── SCREEN 8: FINAL ORDER ── */
+.final-order-tabs { display:flex; gap:8px; padding:12px 14px 0; background:var(--green-dark); }
+.final-tab { padding:8px 16px; border-radius:24px; border:1.5px solid rgba(255,255,255,.3); background:transparent; color:rgba(255,255,255,.65); font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; cursor:pointer; transition:all .15s; }
+.final-tab.active { background:var(--white); color:var(--green-dark); border-color:var(--white); }
+.order-items-list { padding:14px 14px 0; display:flex; flex-direction:column; gap:10px; }
+.order-item-row { background:var(--white); border-radius:var(--radius); display:flex; align-items:center; overflow:hidden; box-shadow:var(--shadow-card); }
+.order-item-img-ph { width:88px; height:80px; background:var(--green-dark); display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; }
+.order-item-info { flex:1; padding:10px 12px; font-size:13px; font-weight:700; color:var(--text-dark); line-height:1.3; }
+.order-item-note { font-size:11px; color:var(--text-muted); font-weight:400; margin-top:2px; }
+.order-item-actions { display:flex; align-items:center; gap:6px; padding-right:10px; }
+.order-qty-pill { display:flex; align-items:center; background:var(--green-btn); border-radius:18px; overflow:hidden; }
+.order-qty-btn { width:28px; height:28px; border:none; background:transparent; color:var(--white); font-size:15px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.order-qty-label { font-size:12px; font-weight:800; color:var(--white); padding:0 8px; }
+.order-del-btn { width:30px; height:30px; border-radius:50%; border:none; background:var(--green-btn); color:var(--white); font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.order-total-box { margin:14px 14px 0; background:var(--white); border-radius:var(--radius); padding:14px 16px; box-shadow:var(--shadow-card); }
+.order-total-row { display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); padding:3px 0; }
+.order-total-row.final-row { border-top:1px solid var(--gray-border); margin-top:8px; padding-top:10px; font-size:15px; font-weight:800; color:var(--text-dark); }
+.order-total-val { font-weight:700; color:var(--green-dark); }
+
+/* ── SCREEN 9: THANKS ── */
+#screen-thanks { display:none; min-height:100vh; background:#ffffff; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:48px 28px 40px; position:relative; overflow:hidden; }
+#screen-thanks.active { display:flex; }
+#screen-thanks::before { content:''; position:absolute; top:20%; left:50%; transform:translateX(-50%); width:320px; height:320px; background:radial-gradient(circle,rgba(94,190,147,.10) 0%,transparent 70%); pointer-events:none; }
+.thanks-script { font-family:'Great Vibes',cursive; font-size:74px; color:var(--green-dark); line-height:1.05; margin-bottom:20px; }
+.thanks-seal { width:76px; height:76px; margin:0 auto 26px; }
+.thanks-seal svg { width:76px; height:76px; display:block; }
+.thanks-order-info { background:var(--green-dark); color:var(--white); border-radius:16px; padding:14px 28px; margin-bottom:22px; font-size:13px; width:100%; max-width:270px; }
+.thanks-order-num { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:600; color:var(--gold-light); line-height:1.1; }
+.thanks-msg { font-size:17px; color:#555550; line-height:1.75; font-style:italic; max-width:270px; margin:0 auto 32px; font-family:'Cormorant Garamond',serif; }
+.thanks-divider { width:48px; height:2px; background:linear-gradient(90deg,transparent,var(--green-mid),transparent); margin:0 auto 28px; }
+.thanks-new-btn { background:var(--green-btn); color:var(--white); border:none; border-radius:30px; padding:14px 40px; font-family:'Nunito',sans-serif; font-size:14px; font-weight:700; cursor:pointer; box-shadow:var(--shadow-btn); transition:transform .13s; width:100%; max-width:270px; }
+.thanks-new-btn:active { transform:scale(.97); }
+#screen-thanks .thanks-script { animation:tyScriptDrop .8s cubic-bezier(.22,1,.36,1) both; }
+#screen-thanks .thanks-seal { animation:tySealPop .6s .22s cubic-bezier(.34,1.56,.64,1) both; }
+#screen-thanks .thanks-order-info { animation:tySlideUp .55s .38s ease both; }
+#screen-thanks .thanks-msg { animation:tySlideUp .55s .48s ease both; }
+#screen-thanks .thanks-divider { animation:tySlideUp .4s .55s ease both; }
+@keyframes tyScriptDrop { 0%{opacity:0;transform:translateY(-36px) scale(.82);filter:blur(4px)} 60%{filter:blur(0)} 100%{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes tySealPop { 0%{opacity:0;transform:scale(.3) rotate(-20deg)} 70%{transform:scale(1.12) rotate(4deg)} 100%{opacity:1;transform:scale(1) rotate(0deg)} }
+@keyframes tySlideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── ADMIN SCREENS ── */
+.login-screen-wrap { min-height:100vh; background:var(--green-deep); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; }
+.login-logo { font-family:'Cormorant Garamond',serif; font-size:48px; color:var(--white); text-align:center; margin-bottom:4px; }
+.login-sub-txt { font-size:12px; color:rgba(255,255,255,.45); margin-bottom:32px; letter-spacing:2px; text-transform:uppercase; }
+.login-card { width:100%; max-width:360px; background:var(--white); border-radius:var(--radius); padding:28px 22px; }
+.login-card h2 { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; color:var(--green-dark); margin-bottom:20px; }
+.form-group { margin-bottom:14px; }
+.form-label { font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.6px; display:block; margin-bottom:6px; }
+.form-input { width:100%; border:1.5px solid var(--gray-border); border-radius:var(--radius-sm); padding:11px 14px; font-family:'Nunito',sans-serif; font-size:14px; color:var(--text-dark); background:var(--cream); outline:none; transition:border-color .2s; }
+.form-input:focus { border-color:var(--green-mid); }
+.login-error { font-size:12px; color:var(--red); margin-bottom:10px; display:none; }
+.login-btn { width:100%; background:var(--green-dark); color:var(--white); border:none; border-radius:var(--radius-sm); padding:14px; font-family:'Nunito',sans-serif; font-size:15px; font-weight:700; cursor:pointer; margin-top:4px; }
+.customer-link { display:block; text-align:center; margin-top:16px; font-size:12px; color:rgba(255,255,255,.4); cursor:pointer; text-decoration:underline; }
+
+/* ── ADMIN DASHBOARD ── */
+.admin-header { background:var(--green-dark); padding:50px 20px 18px; display:flex; align-items:center; justify-content:space-between; }
+.admin-brand { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--white); }
+.admin-brand span { display:block; font-family:'Nunito',sans-serif; font-size:11px; color:rgba(255,255,255,.5); font-weight:400; margin-top:1px; }
+.logout-btn { padding:7px 14px; border:1.5px solid rgba(255,255,255,.25); border-radius:20px; background:transparent; color:rgba(255,255,255,.65); font-size:12px; font-family:'Nunito',sans-serif; cursor:pointer; }
+.admin-tabs { display:flex; gap:0; background:rgba(0,0,0,.2); padding:0 14px; }
+.admin-tab { padding:10px 16px; font-size:12px; font-weight:700; font-family:'Nunito',sans-serif; color:rgba(255,255,255,.55); cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; }
+.admin-tab.active { color:var(--white); border-bottom-color:var(--gold); }
+.admin-body { padding:14px 14px 40px; }
+.admin-sec-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--text-muted); margin:18px 0 10px; }
+.admin-sec-title:first-child { margin-top:0; }
+
+/* Analytics cards */
+.analytics-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px; }
+.stat-card { background:var(--white); border-radius:var(--radius); padding:16px 14px; box-shadow:var(--shadow-card); text-align:center; }
+.stat-val { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:600; color:var(--green-dark); line-height:1; margin-bottom:4px; }
+.stat-label { font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.6px; }
+
+/* Order cards */
+.order-card { background:var(--white); border-radius:var(--radius); padding:14px; margin-bottom:10px; box-shadow:var(--shadow-card); border-left:4px solid var(--green-mid); }
+.order-card-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+.oc-id { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:var(--green-dark); }
+.oc-meta { font-size:11px; color:var(--text-muted); margin-top:1px; }
+.status-chip { font-size:10px; font-weight:700; padding:4px 10px; border-radius:10px; text-transform:uppercase; letter-spacing:.4px; }
+.chip-confirmed { background:#e8f4fd; color:#1a5276; }
+.chip-preparing { background:#fef9ec; color:#7d6608; }
+.chip-ready { background:#edfaf3; color:#1e8449; }
+.chip-served { background:#f4f6f7; color:#5d6d7e; }
+.chip-done { background:#f9f0ff; color:#6c3483; }
+.mini-stages { display:flex; gap:3px; margin-bottom:8px; }
+.mini-seg { height:4px; flex:1; border-radius:2px; background:var(--gray-border); transition:background .3s; }
+.mini-seg.done { background:var(--green-mid); }
+.mini-seg.active { background:var(--gold); }
+.oc-items { font-size:12px; color:var(--text-muted); margin-bottom:10px; line-height:1.7; }
+.oc-total-row { display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--gray-border); padding-top:8px; margin-bottom:10px; font-size:12px; }
+.oc-total-val { font-weight:700; font-size:14px; color:var(--green-dark); }
+.advance-btn { width:100%; background:var(--green-btn); color:var(--white); border:none; border-radius:var(--radius-sm); padding:10px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px; }
+.advance-btn.done-st { background:#7a8c6e; }
+.advance-btn:disabled { background:#c8d5c8; color:var(--text-muted); cursor:default; }
+.no-orders { text-align:center; padding:48px 20px; color:var(--text-muted); font-size:14px; }
+.no-orders .big { font-size:40px; margin-bottom:8px; }
+
+/* ── CART FAB ── */
+.cart-fab { position:fixed; bottom:16px; left:14px; right:14px; max-width:calc(430px - 28px); margin:0 auto; background:var(--green-btn); color:var(--white); border-radius:var(--radius); padding:14px 18px; display:flex; align-items:center; justify-content:space-between; box-shadow:var(--shadow-btn); cursor:pointer; z-index:200; transition:transform .15s; }
+.cart-fab:active { transform:scale(.98); }
+.cart-fab.hidden { display:none; }
+.cart-fab-left { display:flex; align-items:center; gap:10px; }
+.cart-bubble { background:var(--gold); color:var(--green-deep); width:24px; height:24px; border-radius:50%; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.cart-fab-label { font-size:13px; font-weight:700; }
+.cart-fab-price { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; }
+
+/* ── LOADING / SPINNERS ── */
+.loading-overlay { position:fixed; inset:0; background:rgba(26,74,46,.7); display:flex; align-items:center; justify-content:center; z-index:999; backdrop-filter:blur(2px); }
+.loading-overlay.hidden { display:none; }
+.spinner { width:44px; height:44px; border:3px solid rgba(255,255,255,.3); border-top-color:var(--white); border-radius:50%; animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.skeleton { background:linear-gradient(90deg,#e8e8e4 25%,#f4f4f0 50%,#e8e8e4 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:8px; }
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+/* ── TOAST ── */
+.toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(12px); background:var(--green-deep); color:var(--white); padding:10px 20px; border-radius:20px; font-size:13px; font-weight:600; opacity:0; transition:all .3s; z-index:9999; white-space:nowrap; pointer-events:none; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast.error { background:var(--red); }
+
+/* ── STAFF BTN ── */
+#staff-btn { position:fixed; bottom:10px; right:14px; z-index:300; font-size:11px; color:var(--text-muted); cursor:pointer; background:var(--white); border:1px solid var(--gray-border); padding:5px 12px; border-radius:10px; box-shadow:var(--shadow-card); }
+
+/* ── TOP ITEMS LIST ── */
+.top-item-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--gray-border); font-size:13px; }
+.top-item-row:last-child { border-bottom:none; }
+.top-item-count { font-weight:800; color:var(--green-dark); font-family:'Cormorant Garamond',serif; font-size:18px; }
+</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay hidden" id="loading-overlay">
+  <div class="spinner"></div>
+</div>
+
+<!-- SCREEN 1: ENTRY -->
+<div id="screen-entry" class="screen active">
+  <div class="entry-bg-img"></div>
+  <div class="entry-bg"></div>
+  <div class="entry-content">
+    <div class="entry-logo">Eve</div>
+    <div class="entry-tagline">Café & Restaurant</div>
+    <button class="entry-btn" onclick="showScreen('screen-party')">Start Order</button>
+  </div>
+</div>
+
+<!-- SCREEN 2: PARTY SIZE -->
+<div id="screen-party" class="screen">
+  <div class="party-bg"></div>
+  <div class="party-content">
+    <div class="blob-card">
+      <div class="blob-title">How many people are you?</div>
+      <div class="blob-sub">Please select how many people will be seated</div>
+      <div class="party-counter">
+        <button class="counter-btn" onclick="changeParty(-1)">−</button>
+        <span class="counter-val" id="party-val">1</span>
+        <button class="counter-btn" onclick="changeParty(1)">+</button>
+      </div>
+    </div>
+    <button class="party-next-btn" onclick="showScreen('screen-table')">Next</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: TABLE SELECTION -->
+<div id="screen-table" class="screen">
+  <div class="table-header">
+    <div class="table-header-title">Select Your Table</div>
+    <div class="table-header-sub">Grey tables are currently occupied</div>
+  </div>
+  <div class="tables-grid" id="tables-grid"></div>
+  <button class="table-confirm-btn" id="table-confirm-btn" disabled onclick="confirmTable()">Confirm Table</button>
+</div>
+
+<!-- SCREEN 4: MENU CATEGORIES -->
+<div id="screen-menu" class="screen">
+  <div class="green-header">
+    <button class="back-btn" onclick="showScreen('screen-table')">←</button>
+    <div class="green-header-title">Menu</div>
+    <div class="header-spacer"></div>
+  </div>
+  <div class="category-list" id="category-list"></div>
+  <div class="cart-fab hidden" id="cart-fab" onclick="showScreen('screen-final')">
+    <div class="cart-fab-left">
+      <div class="cart-bubble" id="cart-count">0</div>
+      <div>
+        <div class="cart-fab-label">View Cart</div>
+        <div class="cart-fab-label" style="font-size:11px;opacity:.7" id="cart-items-summary"></div>
+      </div>
+    </div>
+    <div class="cart-fab-price" id="cart-total-bar">₹0</div>
+  </div>
+</div>
+
+<!-- SCREEN 5: ITEMS -->
+<div id="screen-items" class="screen">
+  <div class="green-header">
+    <button class="back-btn" onclick="showScreen('screen-menu')">←</button>
+    <div class="green-header-title" id="items-title">Items</div>
+    <div class="header-spacer"></div>
+  </div>
+  <div class="filter-tabs" id="filter-tabs">
+    <button class="filter-tab active" onclick="setFilter('all',this)"><span>⭐</span> Suggested</button>
+    <button class="filter-tab" onclick="setFilter('chef',this)"><span>👨‍🍳</span> Chef Special</button>
+  </div>
+  <div class="items-grid" id="items-grid"></div>
+  <div class="cart-fab hidden" id="cart-fab-2" onclick="showScreen('screen-final')">
+    <div class="cart-fab-left">
+      <div class="cart-bubble" id="cart-count-2">0</div>
+      <div>
+        <div class="cart-fab-label">View Cart</div>
+        <div class="cart-fab-label" style="font-size:11px;opacity:.7" id="cart-summary-2"></div>
+      </div>
+    </div>
+    <div class="cart-fab-price" id="cart-price-2">₹0</div>
+  </div>
+</div>
+
+<!-- SCREEN 6: ITEM DETAIL -->
+<div id="screen-detail" class="screen">
+  <div class="detail-img-wrap">
+    <div class="detail-img-placeholder" id="detail-img-ph"></div>
+    <button class="detail-back-btn" onclick="goBackFromDetail()">←</button>
+  </div>
+  <div class="detail-panel">
+    <div class="detail-badge-pill" id="detail-badge">Suggested Dish</div>
+    <div class="detail-title-row">
+      <div class="detail-name" id="detail-name">Dish Name</div>
+      <div class="detail-price" id="detail-price">₹525</div>
+    </div>
+    <div class="detail-desc" id="detail-desc">Description</div>
+  </div>
+  <div class="detail-footer">
+    <div class="detail-qty-row">
+      <button class="detail-qty-btn" onclick="changeDetailQty(-1)">−</button>
+      <span class="detail-qty-val" id="detail-qty">1</span>
+      <button class="detail-qty-btn" onclick="changeDetailQty(1)">+</button>
+    </div>
+    <button class="detail-add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
+  </div>
+</div>
+
+<!-- SCREEN 7: CUSTOMISE -->
+<div id="screen-customise" class="screen">
+  <div class="green-header">
+    <button class="back-btn" onclick="showScreen('screen-final')">←</button>
+    <div class="green-header-title">Customize & Confirm</div>
+    <div class="header-spacer"></div>
+  </div>
+  <div class="customise-body">
+    <div class="customise-chips">
+      <button class="custom-chip" onclick="toggleChip(this,'sel-green')">Less Spicy</button>
+      <button class="custom-chip" onclick="toggleChip(this,'sel-red')">More Spicy</button>
+      <button class="custom-chip" onclick="toggleChip(this,'sel-purple')">No Onion</button>
+      <button class="custom-chip" onclick="toggleChip(this,'sel-amber')">Extra Crispy</button>
+      <button class="custom-chip" onclick="toggleChip(this,'sel-dark')">Jain</button>
+    </div>
+    <label class="describe-label">Special Instructions</label>
+    <textarea class="describe-area" id="custom-note" placeholder="e.g. less spicy, no garlic, allergies..."></textarea>
+  </div>
+  <div class="action-footer">
+    <button class="action-footer-btn" id="place-order-btn" onclick="placeOrder()">Place Order</button>
+  </div>
+</div>
+
+<!-- SCREEN 8: FINAL ORDER -->
+<div id="screen-final" class="screen">
+  <div class="green-header">
+    <button class="back-btn" onclick="showScreen('screen-items')">←</button>
+    <div class="green-header-title">Your Order</div>
+    <div class="header-spacer"></div>
+  </div>
+  <div class="final-order-tabs">
+    <button class="final-tab active" onclick="showFinalTab('normal',this)">Order Summary</button>
+    <button class="final-tab" onclick="showFinalTab('repeat',this)">Reorder</button>
+  </div>
+  <div id="final-normal-view">
+    <div class="order-items-list" id="order-items-list"></div>
+    <div class="order-total-box" id="order-total-box"></div>
+  </div>
+  <div id="final-repeat-view" style="display:none">
+    <div class="order-items-list" id="repeat-items-list"></div>
+  </div>
+  <div class="action-footer" style="padding-bottom:20px">
+    <button class="action-footer-btn" id="final-action-btn" onclick="goToCustomise()">Customize & Place Order</button>
+  </div>
+</div>
+
+<!-- SCREEN 9: THANK YOU -->
+<div id="screen-thanks" class="screen">
+  <div class="thanks-script">Thank You</div>
+  <div class="thanks-seal">
+    <svg viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="38,2 42,14 54,8 50,20 63,20 56,30 68,36 57,40 63,53 51,50 50,63 41,55 38,68 35,55 26,63 25,50 13,53 19,40 8,36 20,30 13,20 26,20 22,8 34,14" fill="#b39dbd" opacity="0.9"/>
+      <circle cx="38" cy="38" r="20" fill="#7ecba8"/>
+      <polyline points="28,38 35,45 49,30" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="thanks-order-info">
+    <div style="font-size:11px;opacity:.6;margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase">Order Number</div>
+    <div class="thanks-order-num" id="thanks-order-num">EVE-2401</div>
+    <div style="font-size:12px;opacity:.6;margin-top:4px" id="thanks-table">Table 1 · Eve Café</div>
+  </div>
+  <div class="thanks-divider"></div>
+  <div class="thanks-msg">"Your order is confirmed. Sit back, relax, and enjoy your meal."</div>
+  <button class="thanks-new-btn" onclick="orderMore()" style="margin-bottom:12px">Order More Items</button>
+  <button class="thanks-new-btn" onclick="startOver()" style="background:transparent;color:var(--green-dark);box-shadow:none;border:2px solid var(--green-dark)">New Session</button>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="screen-admin-login" class="screen">
+  <div class="login-screen-wrap">
+    <div class="login-logo">Eve</div>
+    <div class="login-sub-txt">Owner Dashboard</div>
+    <div class="login-card">
+      <h2>Sign in</h2>
+      <div class="form-group">
+        <label class="form-label">Login ID</label>
+        <input type="text" class="form-input" id="admin-id" placeholder="Enter login ID" onkeydown="if(event.key==='Enter')doLogin()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" id="admin-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+      </div>
+      <div class="login-error" id="login-error">Incorrect credentials. Try again.</div>
+      <button class="login-btn" onclick="doLogin()">Sign In</button>
+    </div>
+    <span class="customer-link" onclick="showScreen('screen-entry')">← Back to customer view</span>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="screen-admin" class="screen">
+  <div class="admin-header">
+    <div class="admin-brand">Dashboard<span>Eve Café · Owner</span></div>
+    <button class="logout-btn" onclick="adminLogout()">Sign out</button>
+  </div>
+  <div class="admin-tabs" style="background:var(--green-dark)">
+    <div class="admin-tab active" onclick="switchAdminTab('orders',this)">Live Orders</div>
+    <div class="admin-tab" onclick="switchAdminTab('analytics',this)">Analytics</div>
+    <div class="admin-tab" onclick="switchAdminTab('tables',this)">Tables</div>
+  </div>
+  <div class="admin-body">
+    <div id="admin-tab-orders">
+      <div class="admin-sec-title">Active Orders</div>
+      <div id="admin-orders-list"></div>
+    </div>
+    <div id="admin-tab-analytics" style="display:none">
+      <div class="analytics-grid" id="analytics-cards"></div>
+      <div class="admin-sec-title">Top Ordered Items</div>
+      <div id="top-items-list" style="background:var(--white);border-radius:var(--radius);padding:12px 16px;box-shadow:var(--shadow-card)"></div>
+    </div>
+    <div id="admin-tab-tables" style="display:none">
+      <div class="admin-sec-title">Table Status</div>
+      <div id="admin-tables-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>
+    </div>
+  </div>
+</div>
+
+<div id="staff-btn" onclick="showScreen('screen-admin-login')">🔐 Staff</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════
+const API = window.location.origin; // Same origin — Flask serves both
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let partySize = 1;
+let selectedTable = null;
+let cart = {};        // { itemId: { item, qty } }
+let menuData = null;  // full menu from API
+let currentCategory = null;
+let currentFilter = 'all';
+let detailItem = null;
+let detailQty = 1;
+let adminToken = null;
+let adminRefreshTimer = null;
+
+// ═══════════════════════════════════════════════════
+// API HELPERS
+// ═══════════════════════════════════════════════════
+async function apiFetch(path, opts = {}) {
+  try {
+    const res = await fetch(API + path, {
+      headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+      ...opts
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Server error ' + res.status);
+    return data;
+  } catch (e) {
+    console.error('API error:', path, e);
+    throw e;
+  }
+}
+
+function showLoading() { document.getElementById('loading-overlay').classList.remove('hidden'); }
+function hideLoading() { document.getElementById('loading-overlay').classList.add('hidden'); }
+
+// ═══════════════════════════════════════════════════
+// SCREEN ROUTER
+// ═══════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  const staffBtn = document.getElementById('staff-btn');
+  staffBtn.style.display = ['screen-entry','screen-menu','screen-items','screen-table'].includes(id) ? 'block' : 'none';
+  window.scrollTo(0, 0);
+
+  if (id === 'screen-menu') loadMenu();
+  if (id === 'screen-table') loadTables();
+  if (id === 'screen-final') renderFinalOrder();
+  if (id === 'screen-admin') { startAdminRefresh(); renderAdminOrders(); }
+  if (id === 'screen-thanks') restartThanksAnimations();
+  if (id !== 'screen-admin' && adminRefreshTimer) { clearInterval(adminRefreshTimer); adminRefreshTimer = null; }
+}
+
+function restartThanksAnimations() {
+  document.querySelectorAll('#screen-thanks .thanks-script, #screen-thanks .thanks-seal, #screen-thanks .thanks-order-info, #screen-thanks .thanks-msg, #screen-thanks .thanks-divider').forEach(el => {
+    el.style.animation = 'none'; el.offsetHeight; el.style.animation = '';
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// PARTY SIZE
+// ═══════════════════════════════════════════════════
+function changeParty(d) {
+  partySize = Math.max(1, Math.min(20, partySize + d));
+  document.getElementById('party-val').textContent = partySize;
+}
+
+// ═══════════════════════════════════════════════════
+// TABLES — loaded from API
+// ═══════════════════════════════════════════════════
+async function loadTables() {
+  const grid = document.getElementById('tables-grid');
+  grid.innerHTML = Array.from({length:12}, (_,i) => `<div class="table-tile skeleton" style="height:120px"></div>`).join('');
+  try {
+    const data = await apiFetch('/api/tables');
+    renderTables(data.tables);
+  } catch(e) {
+    // fallback: render all free
+    renderTables(Array.from({length:12}, (_,i) => ({number:i+1, status:'free'})));
+  }
+}
+
+function renderTables(tables) {
+  const tableSVG = `<svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+    <rect x="14" y="3" width="10" height="7" rx="3" fill="rgba(255,255,255,0.3)"/>
+    <rect x="28" y="3" width="10" height="7" rx="3" fill="rgba(255,255,255,0.3)"/>
+    <rect x="14" y="42" width="10" height="7" rx="3" fill="rgba(255,255,255,0.3)"/>
+    <rect x="28" y="42" width="10" height="7" rx="3" fill="rgba(255,255,255,0.3)"/>
+    <rect x="3" y="18" width="7" height="10" rx="3" fill="rgba(255,255,255,0.3)"/>
+    <rect x="42" y="18" width="7" height="10" rx="3" fill="rgba(255,255,255,0.3)"/>
+    <rect x="10" y="10" width="32" height="32" rx="6" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+  </svg>`;
+  const grid = document.getElementById('tables-grid');
+  grid.innerHTML = tables.map(t => `
+    <div class="table-tile ${t.number===selectedTable?'selected':''} ${t.status==='occupied'?'occupied':''}"
+         id="tile-${t.number}" onclick="selectTable(${t.number},'${t.status}')">
+      <div class="table-icon-wrap">${tableSVG}</div>
+      <div class="table-tile-num">${t.number}</div>
+      <div class="table-tile-label">${t.status==='occupied'?'Occupied':'Table'}</div>
+    </div>`).join('');
+}
+
+function selectTable(n, status) {
+  if (status === 'occupied') { showToast('Table is occupied', true); return; }
+  document.querySelectorAll('.table-tile').forEach(t => t.classList.remove('selected'));
+  document.getElementById('tile-'+n).classList.add('selected');
+  selectedTable = n;
+  const btn = document.getElementById('table-confirm-btn');
+  btn.disabled = false;
+  btn.textContent = `Confirm Table ${n}`;
+}
+
+function confirmTable() {
+  if (!selectedTable) return;
+  showScreen('screen-menu');
+}
+
+// ═══════════════════════════════════════════════════
+// MENU — loaded from API
+// ═══════════════════════════════════════════════════
+async function loadMenu() {
+  if (menuData) { renderCategories(); return; } // cache hit
+  const list = document.getElementById('category-list');
+  list.innerHTML = Array.from({length:6}, () => `<div class="skeleton" style="height:82px;border-radius:14px;margin-bottom:10px"></div>`).join('');
+  try {
+    showLoading();
+    menuData = await apiFetch('/api/menu');
+    hideLoading();
+    renderCategories();
+  } catch(e) {
+    hideLoading();
+    list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">Failed to load menu. <a href="#" onclick="menuData=null;loadMenu()" style="color:var(--green-dark)">Retry</a></div>`;
+  }
+}
+
+function renderCategories() {
+  if (!menuData) return;
+  const list = document.getElementById('category-list');
+  list.innerHTML = menuData.categories.map(cat => `
+    <div class="category-card" onclick="openCategory('${cat.id}')">
+      <img class="cat-img" src="${cat.img_url}" alt="${cat.name}" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+      <div class="cat-img-placeholder" style="display:none">${cat.emoji}</div>
+      <div class="cat-name">${cat.name}</div>
+      <div class="cat-arrow">›</div>
+    </div>`).join('');
+}
+
+function openCategory(catId) {
+  currentCategory = catId;
+  currentFilter = 'all';
+  const cat = menuData.categories.find(c => c.id === catId);
+  document.getElementById('items-title').textContent = cat ? cat.name : 'Items';
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.filter-tab').classList.add('active');
+  renderItems(catId, 'all');
+  showScreen('screen-items');
+}
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderItems(currentCategory, filter);
+}
+
+function renderItems(catId, filter) {
+  if (!menuData) return;
+  const cat = menuData.categories.find(c => c.id === catId);
+  if (!cat) return;
+  let items = cat.items || [];
+  if (filter === 'chef') items = items.filter(i => (i.tags||[]).includes('chef'));
+  else if (filter === 'suggested') items = items.filter(i => (i.tags||[]).includes('suggested'));
+
+  const grid = document.getElementById('items-grid');
+  if (items.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);font-size:14px">No items in this filter.</div>`;
+    return;
+  }
+  grid.innerHTML = items.map(item => {
+    const qty = cart[item.id] ? cart[item.id].qty : 0;
+    const badge = (item.tags||[]).includes('chef') ? '👨‍🍳 Chef Special' : ((item.tags||[]).includes('suggested') ? '⭐ Suggested' : '');
+    return `<div class="item-card" onclick="openDetail(${item.id})">
+      <img class="item-card-img" src="${item.img_url}" alt="${item.name}" onerror="this.style.display='none';this.nextSibling.style.display='flex'">
+      <div class="item-card-img-placeholder" style="display:none">${item.emoji}</div>
+      <div class="item-card-body">
+        ${badge ? `<div class="item-card-badge">${badge}</div>` : ''}
+        <div class="item-card-name">${item.name}</div>
+        <div class="item-card-price">₹${item.price}</div>
+        <div class="item-qty-row">
+          <div class="qty-pill">
+            <button class="qty-pill-btn" onclick="event.stopPropagation();changeItemQty(${item.id},-1)">−</button>
+            <span class="qty-pill-label">${qty > 0 ? `<span class="qty-pill-val">${qty}</span>` : 'Add'}</span>
+            <button class="qty-pill-btn" onclick="event.stopPropagation();changeItemQty(${item.id},1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  updateCartFabs();
+}
+
+function findItem(id) {
+  if (!menuData) return null;
+  for (const cat of menuData.categories) {
+    const item = (cat.items||[]).find(i => i.id == id);
+    if (item) return item;
+  }
+  return null;
+}
+
+function changeItemQty(id, delta) {
+  const item = findItem(id);
+  if (!item) return;
+  const cur = cart[id] ? cart[id].qty : 0;
+  const nw = Math.max(0, cur + delta);
+  if (nw === 0) delete cart[id];
+  else cart[id] = { item, qty: nw };
+  renderItems(currentCategory, currentFilter);
+}
+
+// ═══════════════════════════════════════════════════
+// ITEM DETAIL
+// ═══════════════════════════════════════════════════
+function openDetail(itemId) {
+  const item = findItem(itemId);
+  if (!item) return;
+  detailItem = item;
+  detailQty = cart[item.id] ? cart[item.id].qty : 1;
+
+  document.getElementById('detail-name').textContent = item.name;
+  document.getElementById('detail-price').textContent = `₹${item.price}`;
+  document.getElementById('detail-desc').textContent = item.description || '';
+  document.getElementById('detail-qty').textContent = detailQty;
+  const badge = (item.tags||[]).includes('chef') ? 'Chef Special' : ((item.tags||[]).includes('suggested') ? 'Suggested Dish' : 'Menu Item');
+  document.getElementById('detail-badge').textContent = badge;
+
+  const ph = document.getElementById('detail-img-ph');
+  ph.textContent = item.emoji;
+  ph.style.display = 'flex';
+  const wrap = document.querySelector('.detail-img-wrap');
+  const old = wrap.querySelector('.detail-img');
+  if (old) old.remove();
+  if (item.img_url) {
+    const img = document.createElement('img');
+    img.className = 'detail-img';
+    img.onload = () => { ph.style.display = 'none'; };
+    img.onerror = () => { img.remove(); ph.style.display = 'flex'; };
+    img.src = item.img_url;
+    wrap.insertBefore(img, wrap.firstChild);
+  }
+  showScreen('screen-detail');
+}
+
+function goBackFromDetail() { showScreen('screen-items'); }
+
+function changeDetailQty(d) {
+  detailQty = Math.max(1, detailQty + d);
+  document.getElementById('detail-qty').textContent = detailQty;
+}
+
+function addToCartFromDetail() {
+  if (!detailItem) return;
+  cart[detailItem.id] = { item: detailItem, qty: detailQty };
+  updateCartFabs();
+  showToast(`${detailQty}× ${detailItem.name} added ✓`);
+  showScreen('screen-items');
+}
+
+// ═══════════════════════════════════════════════════
+// CART FABS
+// ═══════════════════════════════════════════════════
+function updateCartFabs() {
+  const entries = Object.values(cart);
+  const count = entries.reduce((s,e) => s + e.qty, 0);
+  const total = entries.reduce((s,e) => s + e.item.price * e.qty, 0);
+  const numItems = entries.length;
+  ['cart-fab','cart-fab-2'].forEach(id => {
+    const fab = document.getElementById(id);
+    if (!fab) return;
+    fab.classList.toggle('hidden', count === 0);
+  });
+  if (count > 0) {
+    const summary = `${numItems} item${numItems>1?'s':''}`;
+    document.getElementById('cart-count').textContent = count;
+    document.getElementById('cart-total-bar').textContent = '₹'+total;
+    document.getElementById('cart-items-summary').textContent = summary;
+    document.getElementById('cart-count-2').textContent = count;
+    document.getElementById('cart-price-2').textContent = '₹'+total;
+    document.getElementById('cart-summary-2').textContent = summary;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// FINAL ORDER
+// ═══════════════════════════════════════════════════
+function renderFinalOrder() {
+  const entries = Object.values(cart);
+  const listEl = document.getElementById('order-items-list');
+  const totalEl = document.getElementById('order-total-box');
+  const repeatEl = document.getElementById('repeat-items-list');
+
+  if (entries.length === 0) {
+    listEl.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">Your cart is empty</div>`;
+    totalEl.innerHTML = '';
+    repeatEl.innerHTML = '';
+    return;
+  }
+
+  const renderRow = (entry, showRepeat=false) => `
+    <div class="order-item-row">
+      <div class="order-item-img-ph">${entry.item.emoji}</div>
+      <div class="order-item-info">
+        <div>${entry.item.name}</div>
+        <div class="order-item-note">₹${entry.item.price} × ${entry.qty} = ₹${entry.item.price * entry.qty}</div>
+      </div>
+      <div class="order-item-actions">
+        <div class="order-qty-pill">
+          <button class="order-qty-btn" onclick="changeOrderQty(${entry.item.id},-1)">−</button>
+          <span class="order-qty-label">${entry.qty}</span>
+          <button class="order-qty-btn" onclick="changeOrderQty(${entry.item.id},1)">+</button>
+        </div>
+        ${!showRepeat ? `<button class="order-del-btn" onclick="removeOrderItem(${entry.item.id})">🗑</button>` : ''}
+      </div>
+    </div>`;
+
+  listEl.innerHTML = entries.map(e => renderRow(e, false)).join('');
+  repeatEl.innerHTML = entries.map(e => renderRow(e, true)).join('');
+
+  const subtotal = entries.reduce((s,e) => s + e.item.price * e.qty, 0);
+  const tax = Math.round(subtotal * 0.05);
+  const total = subtotal + tax;
+  totalEl.innerHTML = `
+    <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Bill Summary</div>
+    <div class="order-total-row"><span>Subtotal</span><span class="order-total-val">₹${subtotal}</span></div>
+    <div class="order-total-row"><span>GST (5%)</span><span class="order-total-val">₹${tax}</span></div>
+    <div class="order-total-row final-row"><span>Total</span><span>₹${total}</span></div>`;
+}
+
+function changeOrderQty(id, d) {
+  if (!cart[id]) return;
+  cart[id].qty = Math.max(0, cart[id].qty + d);
+  if (cart[id].qty === 0) delete cart[id];
+  updateCartFabs();
+  renderFinalOrder();
+}
+
+function removeOrderItem(id) {
+  delete cart[id];
+  updateCartFabs();
+  renderFinalOrder();
+}
+
+function showFinalTab(tab, btn) {
+  document.querySelectorAll('.final-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const normal = document.getElementById('final-normal-view');
+  const repeat = document.getElementById('final-repeat-view');
+  const actionBtn = document.getElementById('final-action-btn');
+  if (tab === 'normal') {
+    normal.style.display = 'block'; repeat.style.display = 'none';
+    actionBtn.textContent = 'Customize & Place Order';
+    actionBtn.onclick = goToCustomise;
+  } else {
+    normal.style.display = 'none'; repeat.style.display = 'block';
+    actionBtn.textContent = 'Update Order';
+    actionBtn.onclick = () => { showToast('Cart updated ✓'); renderFinalOrder(); };
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// CUSTOMISE & PLACE ORDER — hits the real API
+// ═══════════════════════════════════════════════════
+function goToCustomise() {
+  if (Object.keys(cart).length === 0) { showToast('Add items to your cart first', true); return; }
+  showScreen('screen-customise');
+}
+
+function toggleChip(btn, colorClass) {
+  const allClasses = ['sel-green','sel-red','sel-purple','sel-amber','sel-dark'];
+  const isOn = allClasses.some(c => btn.classList.contains(c));
+  allClasses.forEach(c => btn.classList.remove(c));
+  if (!isOn) btn.classList.add(colorClass);
+}
+
+async function placeOrder() {
+  const entries = Object.values(cart);
+  if (entries.length === 0) { showToast('Cart is empty', true); return; }
+  if (!selectedTable) { showToast('Please select a table first', true); return; }
+
+  const note = document.getElementById('custom-note').value.trim();
+  const chips = [...document.querySelectorAll('.custom-chip')].filter(c =>
+    ['sel-green','sel-red','sel-purple','sel-amber','sel-dark'].some(cl => c.classList.contains(cl))
+  ).map(c => c.textContent.trim());
+
+  const btn = document.getElementById('place-order-btn');
+  btn.disabled = true;
+  btn.textContent = 'Placing Order…';
+  showLoading();
+
+  try {
+    const data = await apiFetch('/api/orders', {
+      method: 'POST',
+      body: JSON.stringify({
+        table_num: selectedTable,
+        party_size: partySize,
+        items: entries.map(e => ({ id: e.item.id, qty: e.qty })),
+        notes: note,
+        chips: chips
+      })
+    });
+
+    hideLoading();
+    // Show thank you
+    document.getElementById('thanks-order-num').textContent = data.order_id;
+    document.getElementById('thanks-table').textContent = `Table ${selectedTable} · Eve Café`;
+    // Reset cart & form
+    cart = {};
+    updateCartFabs();
+    document.getElementById('custom-note').value = '';
+    document.querySelectorAll('.custom-chip').forEach(c =>
+      ['sel-green','sel-red','sel-purple','sel-amber','sel-dark'].forEach(cl => c.classList.remove(cl)));
+    showScreen('screen-thanks');
+  } catch(e) {
+    hideLoading();
+    btn.disabled = false;
+    btn.textContent = 'Place Order';
+    showToast('Failed to place order: ' + e.message, true);
+  }
+}
+
+function orderMore() {
+  menuData = null; // force fresh menu load
+  showScreen('screen-menu');
+}
+
+function startOver() {
+  cart = {};
+  partySize = 1;
+  selectedTable = null;
+  menuData = null;
+  document.getElementById('party-val').textContent = '1';
+  document.querySelectorAll('.table-tile').forEach(t => t.classList.remove('selected'));
+  document.getElementById('table-confirm-btn').disabled = true;
+  document.getElementById('table-confirm-btn').textContent = 'Confirm Table';
+  updateCartFabs();
+  showScreen('screen-entry');
+}
+
+// ═══════════════════════════════════════════════════
+// ADMIN AUTH — hits real API
+// ═══════════════════════════════════════════════════
+async function doLogin() {
+  const username = document.getElementById('admin-id').value.trim();
+  const password = document.getElementById('admin-pass').value.trim();
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+  showLoading();
+  try {
+    const data = await apiFetch('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password })
+    });
+    hideLoading();
+    adminToken = data.token;
+    showScreen('screen-admin');
+  } catch(e) {
+    hideLoading();
+    errEl.style.display = 'block';
+    errEl.textContent = e.message || 'Invalid credentials';
+  }
+}
+
+async function adminLogout() {
+  try { await apiFetch('/api/auth/logout', { method: 'POST' }); } catch(e) {}
+  adminToken = null;
+  document.getElementById('admin-id').value = '';
+  document.getElementById('admin-pass').value = '';
+  showScreen('screen-entry');
+}
+
+// ═══════════════════════════════════════════════════
+// ADMIN DASHBOARD — live from API
+// ═══════════════════════════════════════════════════
+const STAGE_NAMES = ['Confirmed','Preparing','Ready','Served','Done'];
+const STAGE_CHIPS = ['chip-confirmed','chip-preparing','chip-ready','chip-served','chip-done'];
+const STAGE_NEXT  = ['Mark Preparing →','Mark Ready →','Mark Served →','Complete Order','Completed ✓'];
+const STAGE_COLORS = ['#1a5276','#7d6608','#1e8449','#5d6d7e','#6c3483'];
+
+function startAdminRefresh() {
+  if (adminRefreshTimer) clearInterval(adminRefreshTimer);
+  adminRefreshTimer = setInterval(() => {
+    const tab = document.querySelector('.admin-tab.active');
+    if (tab && tab.textContent.trim() === 'Live Orders') renderAdminOrders();
+  }, 8000);
+}
+
+async function renderAdminOrders() {
+  const el = document.getElementById('admin-orders-list');
+  try {
+    const data = await apiFetch('/api/orders');
+    const orders = data.orders;
+    if (orders.length === 0) {
+      el.innerHTML = `<div class="no-orders"><div class="big">☕</div>No orders yet.<br>Orders will appear here when placed.</div>`;
+      return;
+    }
+    el.innerHTML = orders.map(order => {
+      const itemStr = order.items.map(i => `${i.name} ×${i.qty}`).join(', ');
+      const isLast = order.stage >= 4;
+      const segs = [0,1,2,3,4].map(i =>
+        `<div class="mini-seg ${i < order.stage ? 'done' : (i===order.stage ? 'active' : '')}"></div>`).join('');
+      const noteStr = order.notes ? `<br><em>📝 ${order.notes}</em>` : '';
+      const timeStr = new Date(order.created_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      return `<div class="order-card" style="border-left-color:${STAGE_COLORS[order.stage]}">
+        <div class="order-card-head">
+          <div>
+            <div class="oc-id">${order.id}</div>
+            <div class="oc-meta">Table ${order.table_num} · ${order.party_size} pax · ${timeStr}</div>
+          </div>
+          <span class="status-chip ${STAGE_CHIPS[order.stage]}">${STAGE_NAMES[order.stage]}</span>
+        </div>
+        <div class="mini-stages">${segs}</div>
+        <div class="oc-items">${itemStr}${noteStr}</div>
+        <div class="oc-total-row">
+          <span style="font-size:12px;color:var(--text-muted)">Total</span>
+          <span class="oc-total-val">₹${order.total}</span>
+        </div>
+        <button class="advance-btn ${isLast?'done-st':''}" ${isLast?'disabled':''}
+          onclick="advanceOrder('${order.id}',this)">
+          ${STAGE_NEXT[order.stage]}
+        </button>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    el.innerHTML = `<div style="text-align:center;padding:30px;color:var(--text-muted)">Failed to load orders. <a href="#" onclick="renderAdminOrders()">Retry</a></div>`;
+  }
+}
+
+async function advanceOrder(orderId, btn) {
+  if (btn) { btn.disabled = true; btn.textContent = 'Updating…'; }
+  try {
+    const data = await apiFetch(`/api/orders/${encodeURIComponent(orderId)}/stage`, { method: 'PATCH' });
+    showToast(`${orderId} → ${data.stage_name} ✓`);
+    await renderAdminOrders();
+  } catch(e) {
+    showToast('Failed: ' + e.message, true);
+    if (btn) { btn.disabled = false; btn.textContent = 'Retry'; }
+  }
+}
+
+async function loadAnalytics() {
+  const cardsEl = document.getElementById('analytics-cards');
+  const topEl = document.getElementById('top-items-list');
+  cardsEl.innerHTML = Array.from({length:4}, () => `<div class="skeleton" style="height:90px;border-radius:14px"></div>`).join('');
+  try {
+    const data = await apiFetch('/api/analytics');
+    cardsEl.innerHTML = `
+      <div class="stat-card"><div class="stat-val">${data.total_orders}</div><div class="stat-label">Total Orders</div></div>
+      <div class="stat-card"><div class="stat-val">₹${(data.total_revenue/1000).toFixed(1)}k</div><div class="stat-label">Revenue</div></div>
+      <div class="stat-card"><div class="stat-val">${data.live_orders}</div><div class="stat-label">Live Orders</div></div>
+      <div class="stat-card"><div class="stat-val">${data.occupied_tables}/12</div><div class="stat-label">Occupied Tables</div></div>`;
+    topEl.innerHTML = data.top_items.length ? data.top_items.map((item,i) =>
+      `<div class="top-item-row">
+        <span>${['🥇','🥈','🥉','4️⃣','5️⃣'][i]} ${item.name}</span>
+        <span class="top-item-count">${item.count}</span>
+      </div>`).join('') : '<div style="color:var(--text-muted);text-align:center;padding:20px">No data yet</div>';
+  } catch(e) {
+    cardsEl.innerHTML = `<div style="color:var(--text-muted);padding:20px;grid-column:1/-1">Failed to load analytics</div>`;
+  }
+}
+
+async function loadAdminTables() {
+  const grid = document.getElementById('admin-tables-grid');
+  grid.innerHTML = Array.from({length:12}, () => `<div class="skeleton" style="height:80px;border-radius:14px"></div>`).join('');
+  try {
+    const data = await apiFetch('/api/tables');
+    grid.innerHTML = data.tables.map(t => `
+      <div style="background:var(--white);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-card);border-left:4px solid ${t.status==='occupied'?'#c0392b':'#27ae60'}">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--green-dark)">Table ${t.number}</div>
+        <div style="font-size:11px;color:${t.status==='occupied'?'#c0392b':'#27ae60'};font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:4px 0">${t.status}</div>
+        ${t.status==='occupied' ? `<button onclick="freeTable(${t.number},this)" style="font-size:11px;padding:5px 10px;border:none;border-radius:8px;background:#fdecea;color:#c0392b;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700">Free Table</button>` : ''}
+      </div>`).join('');
+  } catch(e) {
+    grid.innerHTML = `<div style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:20px">Failed to load tables</div>`;
+  }
+}
+
+async function freeTable(num, btn) {
+  btn.disabled = true; btn.textContent = '…';
+  try {
+    await apiFetch(`/api/tables/${num}/free`, { method: 'POST' });
+    showToast(`Table ${num} freed`);
+    loadAdminTables();
+  } catch(e) {
+    showToast('Error: ' + e.message, true);
+    btn.disabled = false; btn.textContent = 'Free Table';
+  }
+}
+
+function switchAdminTab(tab, el) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('admin-tab-orders').style.display = tab==='orders' ? 'block' : 'none';
+  document.getElementById('admin-tab-analytics').style.display = tab==='analytics' ? 'block' : 'none';
+  document.getElementById('admin-tab-tables').style.display = tab==='tables' ? 'block' : 'none';
+  if (tab==='analytics') loadAnalytics();
+  if (tab==='tables') loadAdminTables();
+  if (tab==='orders') renderAdminOrders();
+}
+
+// ═══════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('error', isError);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartFabs();
+});
+</script>
+</body>
+</html>
